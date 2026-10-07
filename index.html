@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>David's Coffee Season</title>
+
+<!-- ============================================================
+     DAILY UPDATE: change these three lines, then commit.
+     SEASON         -> "iced" or "hot"
+     SINCE          -> date the current season started (YYYY-MM-DD)
+     LAST_CONFIRMED -> today's date (YYYY-MM-DD)
+     ============================================================ -->
+<script>
+  const SEASON = "iced";
+  const SINCE = "2026-10-07";
+  const LAST_CONFIRMED = "2026-10-07";
+</script>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&display=swap">
+<style id="page-style">
+/* Layout: one centered status card; the season decides the whole palette. */
+:root{
+  --font: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --ice-bg:#e6f1f8; --ice-fg:#14324a; --ice-accent:#2b7bb9; --ice-soft:#c7e0f0;
+  --hot-bg:#fbeee2; --hot-fg:#3f1d0c; --hot-accent:#c4501b; --hot-soft:#f3d3b8;
+  --coffee:#6b3e22; --cream:#c99a6e; --glass:#ffffffb3; --mug:#fffaf5; --line:#14324a;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ice-bg:#0e1d29; --ice-fg:#dcecf7; --ice-accent:#6cb4e8; --ice-soft:#1b3346;
+  --hot-bg:#24130a; --hot-fg:#f8e3d2; --hot-accent:#f08446; --hot-soft:#3d2214;
+  --coffee:#8a5532; --cream:#d8ab80; --glass:#ffffff22; --mug:#efe4da; --line:#dcecf7;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --ice-bg:#0e1d29; --ice-fg:#dcecf7; --ice-accent:#6cb4e8; --ice-soft:#1b3346;
+  --hot-bg:#24130a; --hot-fg:#f8e3d2; --hot-accent:#f08446; --hot-soft:#3d2214;
+  --coffee:#8a5532; --cream:#d8ab80; --glass:#ffffff22; --mug:#efe4da; --line:#dcecf7;
+  color-scheme:dark}
+
+body{background:var(--ice-bg);margin:0}
+#app{--bg:var(--ice-bg);--fg:var(--ice-fg);--accent:var(--ice-accent);--soft:var(--ice-soft);
+  min-height:100vh;background:var(--bg);color:var(--fg);font-family:var(--font);
+  display:grid;place-items:center;padding:32px 16px;box-sizing:border-box;transition:background .4s}
+#app[data-season="hot"]{--bg:var(--hot-bg);--fg:var(--hot-fg);--accent:var(--hot-accent);--soft:var(--hot-soft)}
+.wrap{max-width:30rem;width:100%;text-align:center;display:grid;gap:12px;justify-items:center}
+.eyebrow{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;opacity:.75;margin:0}
+.art{width:min(220px,60vw);height:auto;margin-block:8px}
+h1{font-size:clamp(3.5rem,16vw,6rem);font-weight:800;line-height:.9;margin:0;color:var(--accent);letter-spacing:-.02em}
+.msg{font-size:1.2rem;margin:0;text-wrap:balance}
+.meta{font-size:.9rem;opacity:.75;margin:0;font-variant-numeric:tabular-nums}
+.hot-only{display:none}
+#app[data-season="hot"] .hot-only{display:inline}
+#app[data-season="hot"] .ice-only{display:none}
+.panel{margin-top:20px;padding:14px;border-radius:14px;background:var(--soft);display:grid;gap:10px;width:100%;box-sizing:border-box}
+.panel p{margin:0;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase}
+.btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+button{font:inherit;font-weight:500;padding:10px 16px;border-radius:999px;border:2px solid var(--accent);background:transparent;color:var(--fg);cursor:pointer}
+button[aria-pressed="true"]{background:var(--accent);color:var(--bg)}
+button:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+button:disabled{opacity:.5;cursor:default}
+#status{min-height:1.2em;font-size:.85rem;text-transform:none;letter-spacing:0}
+.steam path{animation:rise 2.4s ease-in-out infinite;opacity:.0}
+.steam path:nth-child(2){animation-delay:.8s}.steam path:nth-child(3){animation-delay:1.6s}
+@keyframes rise{0%{transform:translateY(8px);opacity:0}40%{opacity:.8}100%{transform:translateY(-10px);opacity:0}}
+@media (prefers-reduced-motion: reduce){.steam path{animation:none;opacity:.7}}
+</style>
+</head>
+<body>
+<main id="app" data-season="iced">
+  <div class="wrap">
+    <p class="eyebrow">The David Shnitkin Coffee Report</p>
+
+    <svg class="art ice-only" viewBox="0 0 200 240" role="img" aria-label="An iced coffee with ice cubes and a straw">
+      <rect x="112" y="6" width="10" height="90" rx="3" transform="rotate(14 117 50)" fill="var(--accent)"/>
+      <path d="M45 50 L155 50 L142 225 Q140 232 132 232 L68 232 Q60 232 58 225 Z" fill="var(--glass)" stroke="var(--line)" stroke-width="4"/>
+      <path d="M52 95 L148 95 L142 222 Q140 228 133 228 L67 228 Q60 228 58 222 Z" fill="var(--coffee)"/>
+      <path d="M52 95 L148 95 L146 120 L54 120 Z" fill="var(--cream)"/>
+      <rect x="62" y="70" width="32" height="32" rx="6" transform="rotate(-12 78 86)" fill="#ffffff" fill-opacity=".85" stroke="var(--line)" stroke-width="3"/>
+      <rect x="100" y="78" width="30" height="30" rx="6" transform="rotate(10 115 93)" fill="#ffffff" fill-opacity=".85" stroke="var(--line)" stroke-width="3"/>
+      <rect x="78" y="130" width="26" height="26" rx="5" transform="rotate(20 91 143)" fill="#ffffff" fill-opacity=".45"/>
+    </svg>
+
+    <svg class="art hot-only" viewBox="0 0 200 240" role="img" aria-label="A steaming mug of hot coffee">
+      <g class="steam" fill="none" stroke="var(--accent)" stroke-width="5" stroke-linecap="round">
+        <path d="M70 70 q-10 -15 0 -30 q10 -15 0 -30"/>
+        <path d="M100 70 q-10 -15 0 -30 q10 -15 0 -30"/>
+        <path d="M130 70 q-10 -15 0 -30 q10 -15 0 -30"/>
+      </g>
+      <path d="M150 115 q40 0 40 35 q0 35 -45 35" fill="none" stroke="var(--line)" stroke-width="10"/>
+      <path d="M35 90 L165 90 L158 205 Q156 225 136 225 L64 225 Q44 225 42 205 Z" fill="var(--mug)" stroke="var(--line)" stroke-width="4"/>
+      <ellipse cx="100" cy="92" rx="62" ry="10" fill="var(--coffee)"/>
+      <rect x="70" y="140" width="60" height="8" rx="4" fill="var(--accent)"/>
+    </svg>
+
+    <h1><span class="ice-only">ICED</span><span class="hot-only">HOT</span></h1>
+    <p class="msg"><span class="ice-only">David is still drinking iced coffee. The switch has not happened yet.</span><span class="hot-only">The switch has been made. David is on hot coffee.</span></p>
+    <p class="meta"><span id="sinceLine"></span><br><span id="checkedLine"></span></p>
+
+  </div>
+</main>
+<script>
+(function(){
+  function fmt(iso){
+    var d = new Date(iso + "T12:00:00");
+    return isNaN(d) ? iso : d.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+  }
+  var season = SEASON === "hot" ? "hot" : "iced";
+  document.getElementById("app").dataset.season = season;
+  document.getElementById("sinceLine").textContent =
+    (season === "hot" ? "Hot season since " : "Iced season since ") + fmt(SINCE);
+  document.getElementById("checkedLine").textContent = "Last confirmed " + fmt(LAST_CONFIRMED);
+})();
+</script>
+</body>
+</html>
